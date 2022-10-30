@@ -1,0 +1,712 @@
+{
+	"info": {
+		"_postman_id": "66839133-6a15-414f-813f-83c8255512dd",
+		"name": "E-commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23215377"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "user registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/user/signup",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.environment.set(\"accesstoken2\",jsonData.accessToken);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/user/login",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get  all  user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"const num = jsonData.count;\r",
+									"console.log (num)\r",
+									"\r",
+									"for(var i=0;i<num;i++)\r",
+									"{\r",
+									"    if(jsonData.users[i].email==\"nida6@gmail.com\")\r",
+									"    {\r",
+									"        var userid = jsonData.users[i]._id;\r",
+									"        console.log (userid)\r",
+									"        var deleted_email = jsonData.users[i].email;\r",
+									"        console.log (deleted_email)\r",
+									"        pm.environment.set(\"userid\", userid);\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/user",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/user/{{userid}}",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"user",
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "get all products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const vandu = pm.response.json();\r",
+									"const num = vandu.count;\r",
+									"console.log (num)\r",
+									"\r",
+									"for (var i=0;i<num;i++)\r",
+									"{\r",
+									"    if (vandu.products[i].name==\"nokia 1100\")\r",
+									"    {\r",
+									"        var productid=vandu.products[i]._id;\r",
+									"        console.log (productid)\r",
+									"        var deleted_products = vandu.products[i].name;\r",
+									"        console.log(deleted_products)\r",
+									"        pm.environment.set(\"pid\", productid)\r",
+									"    }\r",
+									"    \r",
+									"}\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ecommerceservice.herokuapp.com/products",
+							"protocol": "https",
+							"host": [
+								"ecommerceservice",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create demo product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"{{name}}\",\r\n\t\"price\": \"{{price}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/products",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/products/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"{{name}}\",\r\n\t\"price\": \"{{price}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/products/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/products/{{userid}}",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"products",
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "get all orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const getallorders=pm.response.json();\r",
+									"const total=getallorders.count\r",
+									"let oid,name;\r",
+									"console.log(total);\r",
+									"for(let i=0;i<total;i++)\r",
+									"{\r",
+									"    if(getallorders.orders[i].product!=null)\r",
+									"    {\r",
+									"         name=getallorders.orders[i].product.name;\r",
+									"         //console.log(name);\r",
+									"         if(name==\"coke\")\r",
+									"         {\r",
+									"             //console.log(name);\r",
+									"             oid=getallorders.orders[i]._id;\r",
+									"             console.log(oid);\r",
+									"             pm.environment.set(\"oid\", oid);\r",
+									"         }\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/orders",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"product\": \"{{product}}\", \r\n\t\"quantity\": \"{{quantity}}\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/orders",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/orders/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update order by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"product\": \"{{product}}\", \r\n\t\"quantity\": \"{{quantity}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/orders/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete order by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accesstoken2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/orders/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
